@@ -42,20 +42,20 @@ describe('Evaluator', function () {
     });
 
     it('evalutates one digit number to its integer value, like "7"', function () {
-        var sut = new Evaluator();
-        var result = sut.eval("7");
-        assert.equal(result, 7);
+        checkEvaluation("7", 7);
     });
 
     it('evalutates one digit number to its integer value, like "5"', function () {
-        var sut = new Evaluator();
-        var result = sut.eval("5");
-        assert.equal(result, 5);
+        checkEvaluation("5", 5);
     });
 
     it('evalutates multiple digit number to its integer value', function () {
-        var sut = new Evaluator();
-        var result = sut.eval("324");
-        assert.equal(result, 324);
+        checkEvaluation("324", 324);
     });
+
+    function checkEvaluation(expr, expected) {
+        var sut = new Evaluator();
+        var result = sut.eval(expr);
+        assert.equal(result, expected);
+    }
 });
