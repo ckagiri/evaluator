@@ -28,6 +28,7 @@ Parser.prototype.parse = function (s) {
         kind,
         lastKind, token,
         i, ii;
+    var operatorFactor = new OperatorFactory();
     for (i = 0; i < s.length; i++) {
         char = s[i];
         kind = kindOf(char);
@@ -59,7 +60,7 @@ Parser.prototype.parse = function (s) {
                 elements.push(new Operand(token));
                 break;
             default:
-                elements.push(new Operator(token));
+                elements.push(operatorFactor.create(token));
         }
         lastKind = kind;
     }
@@ -98,6 +99,33 @@ Operator.prototype.compute = function (left, right) {
     }
 };
 
+function AddOperator() {
+}
+AddOperator.prototype = new Operator('+');
+AddOperator.prototype.compute = function (left, right) {
+    return left.value + right.value;
+};
+
+function SubOperator() {
+}
+SubOperator.prototype = new Operator('-');
+SubOperator.prototype.compute = function (left, right) {
+    return left.value - right.value;
+};
+
+function OperatorFactory() { }
+
+OperatorFactory.prototype.create = function (op) {
+    switch (op) {
+        case '+':
+            return new AddOperator();
+        case '-':
+            return new SubOperator();
+        default:
+            throw new Error();
+    }
+};
+
 describe('Evaluator', function () {
     it('can add two integer numbers', function () {
         var sut = new Evaluator();
@@ -107,7 +135,7 @@ describe('Evaluator', function () {
 
     it('can subtract two integer numbers', function () {
         var sut = new Evaluator();
-        var result = sut.eval("300-5");
+        var result = sut.eval('300-5');
         assert.equal(result, 295);
     });
 });
@@ -121,15 +149,15 @@ describe('Evaluator', function () {
     });
 
     it('evalutates one digit number to its integer value, like "7"', function () {
-        checkEvaluation("7", 7);
+        checkEvaluation('7', 7);
     });
 
     it('evalutates one digit number to its integer value, like "5"', function () {
-        checkEvaluation("5", 5);
+        checkEvaluation('5', 5);
     });
 
     it('evalutates multiple digit number to its integer value', function () {
-        checkEvaluation("324", 324);
+        checkEvaluation('324', 324);
     });
 
     function checkEvaluation(expr, expected) {
@@ -146,40 +174,43 @@ describe('Operand', function () {
     });
 });
 
-describe('Operator', function () {
-    it('sets value property correctly in the constructor', function () {
-        var sut = new Operator('+');
-        assert.equal(sut.value, '+');
-    });
-
-    it('computes correct value for addition operator', function () {
-        var sut = new Operator('+');
-        var result = sut.compute(new Operand(10), new Operand(20));
+describe('AddOperator', function () {
+    it('computes correct value', function () {
+        var sut = new AddOperator();
+        var result = sut.compute(new Operand('10'), new Operand('20'));
         assert.equal(result, 30);
-    });
-
-    it('computes correct value for subtraction operator', function () {
-        var sut = new Operator('-');
-        var result = sut.compute(new Operand(20), new Operand(10));
-        assert.equal(result, 10);
-    });
-
-    it('throws on compute for unknown operator', function () {
-        assert.throws(function () {
-            var sut = new Operator('x');
-            sut.compute(new Operand(0), new Operand(0));
-        }, Error);
     });
 });
 
 describe('Parser', function () {
     it('parses addition elements', function () {
         var sut = new Parser();
-        var result = sut.parse("1+2");
+        var result = sut.parse('1+2');
 
         assert.equal(result.length, 3);
         assert(result[0] instanceof Operand);
         assert(result[1] instanceof Operator);
         assert(result[2] instanceof Operand);
+    });
+});
+
+describe('OperatorFactory', function () {
+    it('returns add operator for plus sign', function () {
+        var sut = new OperatorFactory();
+        var result = sut.create('+');
+        assert(result instanceof AddOperator);
+    });
+
+    it('returns sub operator for minus sign', function () {
+        var sut = new OperatorFactory();
+        var result = sut.create('-');
+        assert(result instanceof SubOperator);
+    });
+
+    it('throws for unknown sign', function () {
+        assert.throws(function () {
+            var sut = new OperatorFactory();
+            sut.create('x');
+        });
     });
 });
