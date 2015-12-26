@@ -19,6 +19,68 @@ Evaluator.prototype.eval = function (s) {
         return parseInt(s);
 };
 
+Evaluator.prototype.parse = function (s) {
+    var tokens = [],
+    elements = [],
+        currentWord = [],
+        char,
+        kind,
+        lastKind, token,
+        i, ii;
+    for (i = 0; i < s.length; i++) {
+        char = s[i];
+        kind = kindOf(char);
+        if (kind !== lastKind) {
+            if (currentWord.length > 0) {
+                tokens.push(currentWord.join(''));
+                currentWord = [];
+            }
+        }
+        switch (kind) {
+            case 'numeric':
+                currentWord.push(char);
+                break;
+            default:
+                tokens.push(char);
+                break;
+        }
+        lastKind = kind;
+    }
+    if (currentWord.length > 0) {
+        tokens.push(currentWord.join(''));
+    }
+    lastKind = null;
+    for (ii = 0; ii < tokens.length; ii++) {
+        token = tokens[ii];
+        kind = kindOf(token);
+        switch (kind) {
+            case 'numeric':
+                elements.push(new Operand(token));
+                break;
+            default:
+                elements.push(new Operator(token));
+        }
+        lastKind = kind;
+    }
+    return elements;
+    function kindOf(word) {
+        if (/[0-9]/g.test(word)) {
+            return 'numeric';
+        } else {
+            return 'operator';
+        }
+    }
+};
+
+function Element() {
+}
+
+function Operand(str) {
+}
+
+function Operator(char) {
+}
+
 describe('Evaluator', function () {
     it('can add two integer numbers', function () {
         var sut = new Evaluator();
@@ -58,4 +120,14 @@ describe('Evaluator', function () {
         var result = sut.eval(expr);
         assert.equal(result, expected);
     }
+
+    it('parses addition elements', function () {
+        var sut = new Evaluator();
+        var result = sut.parse("1+2");
+
+        assert.equal(result.length, 3);
+        assert(result[0] instanceof Operand);
+        assert(result[1] instanceof Operator);
+        assert(result[2] instanceof Operand);
+    });
 });
