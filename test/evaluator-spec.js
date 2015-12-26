@@ -6,17 +6,21 @@ function Evaluator() {
 Evaluator.prototype.eval = function (s) {
     if (!s)
         throw new Error();
-    var elements = this.parse(s);
+    var parser = new Parser();
+    var elements = parser.parse(s);
     if (elements.length == 3) {
-        if (elements[1].value == "+")
-            return parseInt(elements[0].value) + parseInt(elements[2].value);
-        if (elements[1].value == "-")
-            return parseInt(elements[0].value) - parseInt(elements[2].value);
+        var op = elements[1];
+        var left = elements[0];
+        var right = elements[2];
+        return op.compute(left, right);
     }
     return parseInt(s);
 };
 
-Evaluator.prototype.parse = function (s) {
+function Parser() {
+}
+
+Parser.prototype.parse = function (s) {
     var tokens = [],
         elements = [],
         currentWord = [],
@@ -72,7 +76,7 @@ Evaluator.prototype.parse = function (s) {
 function Element() { }
 
 function Operand(val) {
-    this.value = val;
+    this.value = parseInt(val);
 }
 
 Operand.prototype = new Element();
@@ -82,6 +86,17 @@ function Operator(val) {
 }
 
 Operator.prototype = new Element();
+
+Operator.prototype.compute = function (left, right) {
+    switch (this.value) {
+        case '+':
+            return left.value + right.value;
+        case '-':
+            return left.value - right.value;
+        default:
+            throw new Error();
+    }
+};
 
 describe('Evaluator', function () {
     it('can add two integer numbers', function () {
@@ -122,16 +137,6 @@ describe('Evaluator', function () {
         var result = sut.eval(expr);
         assert.equal(result, expected);
     }
-
-    it('parses addition elements', function () {
-        var sut = new Evaluator();
-        var result = sut.parse("1+2");
-
-        assert.equal(result.length, 3);
-        assert(result[0] instanceof Operand);
-        assert(result[1] instanceof Operator);
-        assert(result[2] instanceof Operand);
-    });
 });
 
 describe('Operand', function () {
@@ -145,5 +150,36 @@ describe('Operator', function () {
     it('sets value property correctly in the constructor', function () {
         var sut = new Operator('+');
         assert.equal(sut.value, '+');
+    });
+
+    it('computes correct value for addition operator', function () {
+        var sut = new Operator('+');
+        var result = sut.compute(new Operand(10), new Operand(20));
+        assert.equal(result, 30);
+    });
+
+    it('computes correct value for subtraction operator', function () {
+        var sut = new Operator('-');
+        var result = sut.compute(new Operand(20), new Operand(10));
+        assert.equal(result, 10);
+    });
+
+    it('throws on compute for unknown operator', function () {
+        assert.throws(function () {
+            var sut = new Operator('x');
+            sut.compute(new Operand(0), new Operand(0));
+        }, Error);
+    });
+});
+
+describe('Parser', function () {
+    it('parses addition elements', function () {
+        var sut = new Parser();
+        var result = sut.parse("1+2");
+
+        assert.equal(result.length, 3);
+        assert(result[0] instanceof Operand);
+        assert(result[1] instanceof Operator);
+        assert(result[2] instanceof Operand);
     });
 });
