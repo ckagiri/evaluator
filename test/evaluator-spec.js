@@ -6,22 +6,19 @@ function Evaluator() {
 Evaluator.prototype.eval = function (s) {
     if (!s)
         throw new Error();
-    var parts;
-    if (s.indexOf('+') >= 0) {
-        parts = s.split('+');
-        return parseInt(parts[0]) + parseInt(parts[1]);
+    var elements = this.parse(s);
+    if (elements.length == 3) {
+        if (elements[1].value == "+")
+            return parseInt(elements[0].value) + parseInt(elements[2].value);
+        if (elements[1].value == "-")
+            return parseInt(elements[0].value) - parseInt(elements[2].value);
     }
-    else if (s.indexOf('-') >= 0) {
-        parts = s.split('-');
-        return parseInt(parts[0]) - parseInt(parts[1]);
-    }
-    else
-        return parseInt(s);
+    return parseInt(s);
 };
 
 Evaluator.prototype.parse = function (s) {
     var tokens = [],
-    elements = [],
+        elements = [],
         currentWord = [],
         char,
         kind,
@@ -72,14 +69,19 @@ Evaluator.prototype.parse = function (s) {
     }
 };
 
-function Element() {
+function Element() { }
+
+function Operand(val) {
+    this.value = val;
 }
 
-function Operand(str) {
+Operand.prototype = new Element();
+
+function Operator(val) {
+    this.value = val;
 }
 
-function Operator(char) {
-}
+Operator.prototype = new Element();
 
 describe('Evaluator', function () {
     it('can add two integer numbers', function () {
@@ -129,5 +131,19 @@ describe('Evaluator', function () {
         assert(result[0] instanceof Operand);
         assert(result[1] instanceof Operator);
         assert(result[2] instanceof Operand);
+    });
+});
+
+describe('Operand', function () {
+    it('sets value property correctly in the constructor', function () {
+        var sut = new Operand('123');
+        assert.equal(sut.value, '123');
+    });
+});
+
+describe('Operator', function () {
+    it('sets value property correctly in the constructor', function () {
+        var sut = new Operator('+');
+        assert.equal(sut.value, '+');
     });
 });
