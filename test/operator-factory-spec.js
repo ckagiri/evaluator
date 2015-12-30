@@ -1,25 +1,35 @@
 var AddOperator = require('../lib/AddOperator');
 var SubOperator = require('../lib/SubOperator');
+var MulOperator = require('../lib/MulOperator');
 var OperatorFactory = require('../lib/OperatorFactory');
 var assert = require('assert');
 
 describe('OperatorFactory', function () {
-    it('returns add operator for plus sign', function () {
-        var sut = new OperatorFactory();
-        var result = sut.create('+');
-        assert(result instanceof AddOperator);
+    var sut;
+    beforeEach(function () {
+        sut = new OperatorFactory();
     });
 
-    it('returns sub operator for minus sign', function () {
-        var sut = new OperatorFactory();
-        var result = sut.create('-');
-        assert(result instanceof SubOperator);
+    it('returns add-operator for plus sign', function () {
+        check('+', AddOperator);
+    });
+
+    it('returns sub-operator for minus sign', function () {
+        check('-', SubOperator);
     });
 
     it('throws for unknown sign', function () {
         assert.throws(function () {
-            var sut = new OperatorFactory();
             sut.create('x');
         });
     });
+
+    it('returns mul-operator for asterisk sign', function () {
+        check('*', MulOperator);
+    });
+
+    function check(op, type) {
+        var result = sut.create(op);
+        assert(result instanceof type);
+    };
 });
