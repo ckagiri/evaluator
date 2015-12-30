@@ -20,6 +20,18 @@ describe('Evaluator', function () {
     it('evalutates multiple digit number to its integer value', function () {
         checkEvaluation('324', 324);
     });
+    
+    it('adds two numbers', function () {
+        checkEvaluation('1+2', 3);
+    });
+    
+    it('subtracts two numbers', function () {
+        checkEvaluation('88-20', 68);
+    });
+    
+    it('multplies two numbers', function () {
+        checkEvaluation("12*3", 36);
+    });
 
     function checkEvaluation(expr, expected) {
         var sut = new Evaluator();
