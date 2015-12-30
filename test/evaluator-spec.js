@@ -30,7 +30,11 @@ describe('Evaluator', function () {
     });
     
     it('multplies two numbers', function () {
-        checkEvaluation("12*3", 36);
+        checkEvaluation('12*3', 36);
+    });
+    
+    it('divides two numbers', function () {
+        checkEvaluation('12/3', 4);
     });
 
     function checkEvaluation(expr, expected) {

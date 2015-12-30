@@ -2,6 +2,7 @@ var Operand = require('../lib/Operand');
 var AddOperator = require('../lib/AddOperator');
 var SubOperator = require('../lib/SubOperator');
 var MulOperator = require('../lib/MulOperator');
+var DivOperator = require('../lib/DivOperator');
 var assert = require('assert');
 
 describe('AddOperator', function () {
@@ -27,3 +28,11 @@ describe('MulOperator', function () {
         assert.equal(result, 250);
     });
 });
+
+describe('DivOperator', function () {
+    it('computes correct value', function () {
+        var sut = new DivOperator();
+        var result = sut.compute(new Operand('20'), new Operand('10'));
+        assert.equal(result, 2);
+    });
+})

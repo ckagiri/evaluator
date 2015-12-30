@@ -1,6 +1,7 @@
 var AddOperator = require('../lib/AddOperator');
 var SubOperator = require('../lib/SubOperator');
 var MulOperator = require('../lib/MulOperator');
+var DivOperator =  require('../lib/DivOperator');
 var OperatorFactory = require('../lib/OperatorFactory');
 var assert = require('assert');
 
@@ -26,6 +27,10 @@ describe('OperatorFactory', function () {
 
     it('returns mul-operator for asterisk sign', function () {
         check('*', MulOperator);
+    });
+    
+    it('returns div-operator for slash sign', function () {
+        check('/', DivOperator);
     });
 
     function check(op, type) {
