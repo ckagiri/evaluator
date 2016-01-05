@@ -21,6 +21,10 @@ describe('Evaluator', function () {
         checkEvaluation('30/5', 6);
     });
     
+    it('can handle multiple operations', function () {
+        checkEvaluation("2+3*5-8/2", 13);
+    });
+    
     function checkEvaluation(expr, expected) {
         var parser = new Parser(new OperatorFactory(), new OperandFactory());
         var sut = new Evaluator(parser);

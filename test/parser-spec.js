@@ -9,6 +9,7 @@ var sinon = require('sinon');
 describe('Parser', function () {
     it('parses addition elements', function () {
         var sut = new Parser(new OperatorFactory(), new OperandFactory());
+        
         var result = sut.parse('1+2');
 
         assert.equal(result.length, 3);
@@ -25,5 +26,20 @@ describe('Parser', function () {
         var sut = new Parser(new OperatorFactory(), operandFactory);
         sut.parse('1');
         mock.verify();
+    });
+    
+    it('multiple operand and operators are parsed correctly', function () {
+        var sut = new Parser(new OperatorFactory(), new OperandFactory());
+        
+        var result = sut.parse("1+2*3-4");
+        
+        assert.equal(result.length, 7);
+        assert(result[0] instanceof Operand);
+        assert(result[1] instanceof Operator);
+        assert(result[2] instanceof Operand);
+        assert(result[3] instanceof Operator);
+        assert(result[4] instanceof Operand);
+        assert(result[5] instanceof Operator);
+        assert(result[6] instanceof Operand);
     });
 });

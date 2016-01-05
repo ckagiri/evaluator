@@ -40,6 +40,10 @@ describe('Evaluator', function () {
     it('divides two numbers', function () {
         checkEvaluation('12/3', 4);
     });
+    
+    it('handles two operations', function () {
+        checkEvaluation("2*3-5", 1);
+    });
 
     function checkEvaluation(expr, expected) {
         var parser = new Parser(new OperatorFactory(), new OperandFactory());
