@@ -42,12 +42,23 @@ describe('ElementList', function () {
         var rOperand = new Operand(0);
         var sut = new ElementList([otherOpd1, otherOp, otherOpd2, lOperand, op, rOperand]);
         var operation = new Operation(lOperand, op, rOperand);
-        
+
         sut.replaceOperation(operation, new Operand(0));
         // to confirm the replacement was correct, findOperation should return the "other" one
         var result = sut.findOperation();
         assert.equal(result.lOperand, otherOpd1);
         assert.equal(result.op, otherOp);
         assert.equal(result.rOperand, otherOpd2);
+    });
+
+    it('first returns first element', function () {
+        var lOperand = new Operand(0);
+        var op = new AddOperator();
+        var rOperand = new Operand(0);
+        var sut = new ElementList([lOperand, op, rOperand]);
+        
+        var result = sut.first();
+        
+        assert.equal(result, lOperand);
     });
 });
