@@ -1,3 +1,6 @@
+var Parser = require('../lib/Parser');
+var OperatorFactory = require('../lib/OperatorFactory');
+var OperandFactory = require('../lib/OperandFactory');
 var Evaluator = require('../lib/Evaluator');
 var assert = require('assert');
 
@@ -19,7 +22,8 @@ describe('Evaluator', function () {
     });
     
     function checkEvaluation(expr, expected) {
-        var sut = new Evaluator();
+        var parser = new Parser(new OperatorFactory(), new OperandFactory());
+        var sut = new Evaluator(parser);
         var result = sut.eval(expr);
         assert.equal(result, expected);
     }
