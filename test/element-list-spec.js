@@ -1,5 +1,6 @@
 var Operand = require('../lib/Operand');
 var AddOperator = require('../lib/AddOperator');
+var MulOperator = require('../lib/MulOperator');
 var Operation = require('../lib/Operation');
 var ElementList = require('../lib/ElementList');
 var assert = require('assert');
@@ -56,9 +57,20 @@ describe('ElementList', function () {
         var op = new AddOperator();
         var rOperand = new Operand(0);
         var sut = new ElementList([lOperand, op, rOperand]);
-        
+
         var result = sut.first();
-        
+
         assert.equal(result, lOperand);
+    });
+
+    it('findOperation returns highest precedence', function () {
+        var lOperand = new Operand(0);
+        var op = new MulOperator();
+        var rOperand = new Operand(0);
+        var sut = new ElementList([new Operand(0), new AddOperator(), new Operand(0), lOperand, op, rOperand]);
+        var result = sut.findOperation();
+        assert.equal(result.lOperand, lOperand);
+        assert.equal(result.op, op);
+        assert.equal(result.rOperand, rOperand);
     });
 });

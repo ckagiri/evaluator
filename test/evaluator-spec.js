@@ -42,7 +42,11 @@ describe('Evaluator', function () {
     });
     
     it('handles two operations', function () {
-        checkEvaluation("2*3-5", 1);
+        checkEvaluation('2*3-5', 1);
+    });
+    
+    it('two operations respecting precedence', function () {
+        checkEvaluation('2+3*5', 17);
     });
 
     function checkEvaluation(expr, expected) {

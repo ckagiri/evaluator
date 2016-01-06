@@ -35,4 +35,13 @@ describe('DivOperator', function () {
         var result = sut.compute(new Operand(20), new Operand(10));
         assert.equal(result, 2);
     });
-})
+});
+
+describe('Operator', function () {
+    it('Operator precedence is set correctly', function () {
+        assert.equal(new AddOperator().precedence, 1);
+        assert.equal(new SubOperator().precedence, 1);
+        assert.equal(new MulOperator().precedence, 2);
+        assert.equal(new DivOperator().precedence, 2);
+    });
+});
