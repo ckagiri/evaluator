@@ -11,6 +11,11 @@ describe('AddOperator', function () {
         var result = sut.compute(new Operand(10), new Operand(20));
         assert.equal(result, 30);
     });
+    
+    it('takes precedence into account', function () {
+        var sut = new AddOperator(7);
+        assert.equal(sut.precedence, 8);
+    });
 });
 
 describe('SubOperator', function () {
@@ -18,6 +23,11 @@ describe('SubOperator', function () {
         var sut = new SubOperator();
         var result = sut.compute(new Operand(30), new Operand(10));
         assert.equal(result, 20);
+    });
+    
+    it('takes precedence into account', function () {
+        var sut = new SubOperator(7);
+        assert.equal(sut.precedence, 8);
     });
 });
 
@@ -27,6 +37,11 @@ describe('MulOperator', function () {
         var result = sut.compute(new Operand(10), new Operand(25));
         assert.equal(result, 250);
     });
+    
+    it('takes precedence into account', function () {
+        var sut = new MulOperator(7);
+        assert.equal(sut.precedence, 9);
+    });
 });
 
 describe('DivOperator', function () {
@@ -35,10 +50,15 @@ describe('DivOperator', function () {
         var result = sut.compute(new Operand(20), new Operand(10));
         assert.equal(result, 2);
     });
+    
+    it('takes precedence into account', function () {
+        var sut = new DivOperator(7);
+        assert.equal(sut.precedence, 9);
+    });
 });
 
 describe('Operator', function () {
-    it('Operator precedence is set correctly', function () {
+    it('Operator-precedence is set correctly', function () {
         assert.equal(new AddOperator().precedence, 1);
         assert.equal(new SubOperator().precedence, 1);
         assert.equal(new MulOperator().precedence, 2);

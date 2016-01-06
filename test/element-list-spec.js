@@ -90,12 +90,26 @@ describe('ElementList', function () {
         var op = new SubOperator();
         var rOperand = new Operand(1);
         var sut = new ElementList([op, rOperand]);
-        
+
         var operation = sut.findOperation();
 
         sut.replaceOperation(operation, new Operand(-1));
 
         assert.equal(sut.first().value, -1);
         assert.strictEqual(sut.findOperation(), null);
+    });
+
+    it('findOperation can handle two successive operators', function () {
+        var opd1 = new Operand(1);
+        var op1 = new AddOperator();
+        var op2 = new SubOperator(10);
+        var opd2 = new Operand(2);
+        var sut = new ElementList([opd1, op1, op2, opd2]);
+        
+        var result = sut.findOperation();
+        
+        assert.equal(result.lOperand.value, 0);
+        assert.equal(result.op, op2);
+        assert.equal(result.rOperand, opd2);
     });
 });

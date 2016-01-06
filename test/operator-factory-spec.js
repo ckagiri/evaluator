@@ -34,7 +34,7 @@ describe('OperatorFactory', function () {
     });
 
     function check(op, type) {
-        var result = sut.create(op);
+        var result = sut.create(op, 0);
         assert(result instanceof type);
     };
 });

@@ -1,12 +1,13 @@
 var SubOperator = require('./lib/SubOperator');
-var Operand = require('./lib/Operand');
-var ElementList = require('./lib/ElementList');
+var AddOperator = require('./lib/AddOperator');
+var MulOperator = require('./lib/MulOperator');
+var DivOperator = require('./lib/DivOperator');
+var Parser = require('./lib/Parser');
+var OperatorFactory = require('./lib/OperatorFactory');
+var OperandFactory = require('./lib/OperandFactory');
 
-var op = new SubOperator();
-var rOperand = new Operand(1);
-var sut = new ElementList([op, rOperand]);
+var sut = new Parser(new OperatorFactory(), new OperandFactory());
 
-var operation = sut.findOperation();
-
-sut.replaceOperation(operation, new Operand(-1));
-
+var result = sut.parse('(1+2)');
+        
+console.log(result);

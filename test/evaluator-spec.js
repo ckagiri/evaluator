@@ -52,6 +52,18 @@ describe('Evaluator', function () {
     it('handles negative numbers', function () {
         checkEvaluation("-3", -3);
     });
+    
+    it('handles numbers in parentheses', function () {
+        checkEvaluation('(3)', 3);
+    });
+    
+    it('handles negative numbers in parentheses', function () {
+        checkEvaluation('(-3)', -3);
+    });
+    
+    it('handles adding a negative number in parentheses', function () {
+        checkEvaluation("2+(-3)", -1);
+    });
 
     function checkEvaluation(expr, expected) {
         var parser = new Parser(new OperatorFactory(), new OperandFactory());
