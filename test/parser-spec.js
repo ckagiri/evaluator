@@ -8,14 +8,14 @@ var assert = require('assert');
 var sinon = require('sinon');
 
 describe('Parser', function () {
-    function createParser() {
-        return new Parser(new OperatorFactory(), new OperandFactory());
+    function parse(s) {
+        var sut = new Parser(new OperatorFactory(), new OperandFactory());
+
+        return sut.parse(s);
     }
 
     it('parses addition elements', function () {
-        var sut = createParser();
-
-        var result = sut.parse('1+2');
+        var result = parse('1+2');
 
         assert.equal(result.length, 3);
         assert(result[0] instanceof Operand);
@@ -34,9 +34,7 @@ describe('Parser', function () {
     });
 
     it('multiple operand and operators are parsed correctly', function () {
-        var sut = createParser();
-
-        var result = sut.parse('1+2*3-4');
+        var result = parse('1+2*3-4');
 
         assert.equal(result.length, 7);
         assert(result[0] instanceof Operand);
@@ -49,9 +47,7 @@ describe('Parser', function () {
     });
 
     it('handles negative numbers', function () {
-        var sut = createParser();
-
-        var result = sut.parse('-3');
+        var result = parse('-3');
 
         assert.equal(result.length, 2);
         assert(result[0] instanceof SubOperator);
@@ -59,19 +55,15 @@ describe('Parser', function () {
     });
 
     it('handles numbers in parentheses', function () {
-        var sut = createParser();
-
-        var result = sut.parse('(3)');
+        var result = parse('(3)');
 
         assert.equal(result.length, 1);
         assert.equal(result[0].value, 3);
     });
 
     it('operators in parenthes get a precedence boost', function () {
-        var sut = createParser();
-        
-        var result = sut.parse('(1+2)');
-        
+        var result = parse('(1+2)');
+
         assert.equal(result.length, 3);
         assert.equal(result[0].value, 1);
         assert.equal(result[1].precedence, 11);
