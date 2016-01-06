@@ -25,6 +25,10 @@ describe('Evaluator', function () {
         checkEvaluation("2+3*5-8/2", 13);
     });
     
+    it('can handle complex expressions', function () {
+        checkEvaluation("-2+3*(-5+8-9)/2", -11);
+    });
+    
     function checkEvaluation(expr, expected) {
         var parser = new Parser(new OperatorFactory(), new OperandFactory());
         var sut = new Evaluator(parser);

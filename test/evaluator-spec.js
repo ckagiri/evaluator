@@ -48,6 +48,10 @@ describe('Evaluator', function () {
     it('two operations respecting precedence', function () {
         checkEvaluation('2+3*5', 17);
     });
+    
+    it('handles negative numbers', function () {
+        checkEvaluation("-3", -3);
+    });
 
     function checkEvaluation(expr, expected) {
         var parser = new Parser(new OperatorFactory(), new OperandFactory());

@@ -1,6 +1,7 @@
 var Operand = require('../lib/Operand');
 var AddOperator = require('../lib/AddOperator');
 var MulOperator = require('../lib/MulOperator');
+var SubOperator = require('../lib/SubOperator');
 var Operation = require('../lib/Operation');
 var ElementList = require('../lib/ElementList');
 var assert = require('assert');
@@ -72,5 +73,29 @@ describe('ElementList', function () {
         assert.equal(result.lOperand, lOperand);
         assert.equal(result.op, op);
         assert.equal(result.rOperand, rOperand);
+    });
+
+    it('findOperation can handle negative numbers', function () {
+        var op = new SubOperator();
+        var rOperand = new Operand(1);
+        var sut = new ElementList([op, rOperand]);
+        var result = sut.findOperation();
+
+        assert.strictEqual(result.lOperand.value, 0);
+        assert.equal(result.op, op);
+        assert.equal(result.rOperand, rOperand);
+    });
+
+    it('replaceOperation can handle negative numbers', function () {
+        var op = new SubOperator();
+        var rOperand = new Operand(1);
+        var sut = new ElementList([op, rOperand]);
+        
+        var operation = sut.findOperation();
+
+        sut.replaceOperation(operation, new Operand(-1));
+
+        assert.equal(sut.first().value, -1);
+        assert.strictEqual(sut.findOperation(), null);
     });
 });
