@@ -69,11 +69,35 @@ describe('Parser', function () {
         assert.equal(result[1].precedence, 11);
         assert.equal(result[2].value, 2);
     });
-    
+
     it('handles floating point numbers', function () {
         var result = parse('1.5');
-        
+
         assert.equal(result.length, 1);
         assert.equal(result[0].value, 1.5);
+    });
+
+    it('handles too many open parentheses', function () {
+        assert.throws(function () {
+            parse('(1');
+        });
+    });
+
+    it('handles too many closed parentheses', function () {
+        assert.throws(function () {
+            parse('1)');
+        });
+    });
+
+    it('handles double decimal point', function () {
+        assert.throws(function () {
+            parse('1.5.7');
+        });
+    });
+    
+    it('handles expression with spaces', function () {
+        var result = parse('(1 + 2)');
+        
+        assert.equal(result.length, 3);
     });
 });
