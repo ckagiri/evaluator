@@ -1,19 +1,33 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
+    <meta charset="utf-8">
 
-  <title>The HTML5 Herald</title>
-  <meta name="description" content="Simple Math Evaluator">
-  <meta name="author" content="Charles Kagiri">
+    <title>The HTML5 Herald</title>
+    <meta name="description" content="Simple Math Evaluator">
+    <meta name="author" content="Charles Kagiri">
 
-  <!--[if lt IE 9]>
+    <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
+
+    <link href="./css/jquery.eqInput.css" rel="stylesheet">
 </head>
 
 <body>
-  <script src="dist/matheval.js"></script>
+    <div id="expr-input" data-placeholder="Insert formula"></div>
+    <button id="clear-all"> CLEAR ALL </button>
+    <button id="expr-submit"> ENTER </button>
+    <div id="expr-panel"></div>
+
+    <!-- jQuery Version 1.11.0 -->
+    <script src="./js/jquery-1.11.0.js"></script>
+
+    <script src="./js/jquery.eqInput.js"></script>
+    <script src="dist/matheval.js"></script>
+    <script src="demo.js"></script>
 </body>
+
 </html>
