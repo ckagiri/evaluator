@@ -3,6 +3,10 @@ var OperatorFactory = require('../lib/OperatorFactory');
 var OperandFactory = require('../lib/OperandFactory');
 var Evaluator = require('../lib/Evaluator');
 var assert = require('assert');
+var chai = require('chai');
+var expect = chai.expect;
+var chaiStats = require('chai-stats');
+chai.use(chaiStats);
 
 describe('Evaluator', function () {
     it('throws exception if null or empty string', function () {
@@ -62,13 +66,20 @@ describe('Evaluator', function () {
     });
     
     it('handles adding a negative number in parentheses', function () {
-        checkEvaluation("2+(-3)", -1);
+        checkEvaluation('2+(-3)', -1);
+    });
+    
+    it('handles floating point number', function () {
+        checkEvaluation('1.5', 1.5, 0.01);
     });
 
-    function checkEvaluation(expr, expected) {
+    function checkEvaluation(expr, expected, precision) {
+        precision = precision || 3;
         var parser = new Parser(new OperatorFactory(), new OperandFactory());
         var sut = new Evaluator(parser);
+        
         var result = sut.eval(expr);
-        assert.equal(result, expected);
+        
+        expect(result).to.almost.equal(expected, 3);
     }
 });

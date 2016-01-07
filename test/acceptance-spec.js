@@ -34,7 +34,7 @@ describe('Evaluator', function () {
     });
 
     it('can handle complex expression with floating point numbers', function () {
-        checkEvaluation("1.2*6/(2.74-9.1*(-5.27)/(3+17.4*(9.15-1.225)))", 3.08, 2);
+        checkEvaluation("1.2*6/(2.74-9.1*(-5.27)/(3+17.4*(9.15-1.225)))", 2.34, 2);
     });
 
     function checkEvaluation(expr, expected, precision) {
@@ -44,6 +44,6 @@ describe('Evaluator', function () {
         
         var result = sut.eval(expr);
         
-        expect(result).to.almost.equal(expected, 3);
+        expect(result).to.almost.equal(expected, precision);
     }
 });

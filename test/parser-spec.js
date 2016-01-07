@@ -69,4 +69,11 @@ describe('Parser', function () {
         assert.equal(result[1].precedence, 11);
         assert.equal(result[2].value, 2);
     });
+    
+    it('handles floating point numbers', function () {
+        var result = parse('1.5');
+        
+        assert.equal(result.length, 1);
+        assert.equal(result[0].value, 1.5);
+    });
 });
