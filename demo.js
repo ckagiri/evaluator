@@ -20,14 +20,14 @@
         try{
           result = evaluator.eval(input);  
         } catch(ex){
-            result = 'Parsin error';
+            result = 'Parsing error';
         }
         $('.panel-row').remove();
         render(result);
-        clearInput();
     });
 
     $clear.click(function () {
+        $input.html('');
         $('.panel-row').remove();
     });
 
@@ -36,9 +36,5 @@
             span = $('<span>' + result + '<span>');
         span.appendTo(div);
         $panel.append(div);
-    }
-
-    function clearInput() {
-        $input.html('');
     }
 })(window.jQuery, window.matheval);
